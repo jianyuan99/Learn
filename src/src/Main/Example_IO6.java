@@ -44,6 +44,7 @@ public class Example_IO6 {
         Circle cir = (Circle)objectInput.readObject();
         System.out.println("这是一个Circle对象");
         System.out.println("面积是："+cir.area());
+
     }
 }
 
