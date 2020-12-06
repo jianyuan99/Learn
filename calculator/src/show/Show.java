@@ -3,8 +3,7 @@ package show;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,7 +15,7 @@ public class Show {
 //        CFrame cframe = new CFrame();
 //        cframe.createJFrameWindows();
 //        WindowMenu win = new WindowMenu("菜单窗口", 200, 300, 400, 700);
-        ComponentlnWindow componentlnWindow = new ComponentlnWindow(200,300,550,350);
+        ComponentlnWindow componentlnWindow = new ComponentlnWindow(200, 300, 550, 350);
     }
 }
 
@@ -106,46 +105,132 @@ class ComponentlnWindow extends JFrame {
     private JTextArea area;
     private Container container;
 
-    public ComponentlnWindow(int x,int y,int width,int height) {
-        setBounds(x,y,width,height);
+    public ComponentlnWindow(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
         init();
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     void init() {
         container = this.getContentPane();
         container.setBackground(Color.cyan);
-        setLayout(new FlowLayout());
-        add(new JLabel("文本框："));
+        setLayout(new FlowLayout());//浮动布局
+        container.add(new JLabel("文本框："));
         text = new JTextField(10);
-        add(text);
-        add(new JLabel("按钮"));
+        container.add(text);
+        container.add(new JLabel("按钮"));
         button = new JButton("确定");
-        add(button);
-        add(new JLabel("选择框"));
+        container.add(button);
+        container.add(new JLabel("选择框"));
         checkBox1 = new JCheckBox("喜欢音乐");
         checkBox2 = new JCheckBox("喜欢旅游");
         checkBox3 = new JCheckBox("喜欢电影");
-        add(checkBox1);
-        add(checkBox2);
-        add(checkBox3);
-        add(new JLabel("单选按钮"));
+        container.add(checkBox1);
+        container.add(checkBox2);
+        container.add(checkBox3);
+        container.add(new JLabel("单选按钮"));
         group = new ButtonGroup();
         radio1 = new JRadioButton("男");
         radio2 = new JRadioButton("女");
-        add(radio1);
-        add(radio2);
-        add(new JLabel("下拉列表"));
+        container.add(radio1);
+        container.add(radio2);
+        container.add(new JLabel("下拉列表"));
         comboBox = new JComboBox<String>();
         comboBox.addItem("音乐天地");
         comboBox.addItem("武术天地");
         comboBox.addItem("象棋乐园");
-        add(comboBox);
-        add(new JLabel("文本区:"));
+        container.add(comboBox);
+        container.add(new JLabel("文本区:"));
         area = new JTextArea(6, 12);
-        add(new JScrollPane(area));
+        container.add(new JScrollPane(area));
+        ClickAction click = new ClickAction(this.text);
+        ClickAction click2 = new ClickAction(this.text,"click2");
+        ClickAction click3 = new ClickAction(this.text, this.comboBox);
+        button.addActionListener(click3);
+//        button.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                new clinkAction(text);
+////                text.setText("clink this button\n"+(String)comboBox.getSelectedItem());
+////                new WindowMenu("new Window", 200, 300, 400, 700);
+//            }
+//        });
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("窗口关闭");
+                System.exit(0);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+
 
     }
 
+}
+
+class ClickAction implements ActionListener{
+    private JTextField textField;
+    private JComboBox comboBox;
+    private String text;
+    public ClickAction(JTextField textField){
+        this.textField = textField;
+        text = textField.getText();
+    }
+
+    public ClickAction(JComboBox comboBox){
+        this.comboBox = comboBox;
+        text = (String) comboBox.getSelectedItem();
+    }
+
+    public ClickAction(JTextField textField,JComboBox comboBox){
+        this.comboBox = comboBox;
+        this.textField = textField;
+        text = textField.getText() + comboBox.getSelectedItem();
+    }
+
+    public ClickAction(JTextField textField, String text){
+        this.textField = textField;
+        this.text = text;
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(text.isEmpty()){
+            text = "clink Button";
+        }
+        else {
+            text = textField.getText() + comboBox.getSelectedItem();
+        }
+        textField.setText(text);
+    }
 }
