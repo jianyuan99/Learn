@@ -9,19 +9,19 @@ public class Example_IO5 {
         DataOutputStream dos = new DataOutputStream(bos);
         dos.writeInt(129);
         byte[] result = new byte[4];
-//        result = bos.toByteArray();
         ByteArrayInputStream inByte = new ByteArrayInputStream(bos.toByteArray());
         while((n=inByte.read(result,0,4))!=-1){}
         inByte.close();
 
-
+        System.out.println("int转化为长度为4的字节数组");
         for(int i=0;i<result.length;i++){
             System.out.println(result[i]);
         }
 
-        ByteArrayInputStream ios = new ByteArrayInputStream(bos.toByteArray());
+        ByteArrayInputStream ios = new ByteArrayInputStream(result);
         DataInputStream ros = new DataInputStream(ios);
         int i= ros.readInt();
+        System.out.println("长度为4的字节数组转为int型");
         System.out.println(i);
     }
 }
